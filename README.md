@@ -9,6 +9,7 @@ The script uses a `config.json` file to store configuration settings. Below is a
 ```json
 {
     "url": "https://www.remax.<SOME_DOMAIN>/api/Listing/PaginatedMultiMatchSearch",
+    "base_url": "base_search_url",
     "filters": "see_next_steps_how_to_get_it",
     "bot_token": "your_telegram_bot_token",
     "chat_id": "your_telegram_chat_id",
@@ -20,6 +21,7 @@ The script uses a `config.json` file to store configuration settings. Below is a
 ### Configuration Settings
 
 - `url`: The URL of the Remax API endpoint for fetching listings.
+- `base_url`: Depends on the region, but it's a prepend of the item's URL - `https://www.remax.fr/fr/mandats/<THE_SEARCH_ITEM>`
 - `filters`: A JSON string containing the filters to apply when fetching listings. This should be a valid JSON string with the appropriate filters for your search criteria.
 - `bot_token`: The token for your Telegram bot, obtained from BotFather.
 - `chat_id`: The chat ID of the Telegram chat where notifications will be sent. This can be a user ID or a group chat ID.
@@ -31,11 +33,11 @@ For the `url`, you need to specify the domain: `com`, `fr`, `de`, etc., like thi
 
 `filters` can be obtained through the development console after performing the desired search. Look for:
 
-![alt text](res/image.png)
+![Example of filters in development console](res/image.png)
 
 Don't forget to select `view parsed` and copy the content.
 
-In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on Google (small help: search for "Telegram BotFather").
+In regard to the Telegram bot (`bot_token` and `chat_id`), you can find more information and create your bot using [Telegram BotFather](https://core.telegram.org/bots#botfather).
 
 ## Usage
 
@@ -43,7 +45,7 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    It is recommended to create a virtual environment to manage dependencies. You can create a virtual environment using the following commands:
 
    ```sh
-   py -m venv .venv
+   python -m venv .venv
    ```
 
    Activate the virtual environment:
@@ -61,7 +63,7 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    Ensure you have the required dependencies installed. You can install them using `pip`:
 
    ```sh
-   py -m pip install requests asyncio python-telegram-bot
+   python -m pip install requests asyncio python-telegram-bot
    ```
 
 3. **Configure `config.json`**:
@@ -71,10 +73,10 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    You can run the script using Python:
 
    ```sh
-   py remax-scalper.py
+   python remax-scalper.py
    ```
 
-5. **Schedule the Script**:
+5. **Schedule the Script** (Windows):
    To run the script periodically, you can use Task Scheduler on Windows. Create a `.vbs` file to run the script without a console window popping up and schedule it using Task Scheduler.
 
 ## Running the Script Using Task Scheduler (__Windows__)
@@ -83,8 +85,24 @@ To run the Python script using Task Scheduler without a console window popping u
 
 ```vbscript
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "X:\remax-scalper\.venv\Scripts\pythonw.exe X:\remax-scalper\remax-scalper.py", 0, False
+objShell.Run "C:\Path\To\Your\Python\Interpreter\pythonw.exe C:\Path\To\Your\Script\remax-scalper.py", 0, False
 ```
+
+6. **Using `crontab`** (Linux):
+
+## Open the Crontab File
+   - Open a terminal and type `crontab -e` to edit the crontab file.
+
+## Add a Cron Job
+   - Add the following line to schedule the script to run daily at midnight:
+     ```sh
+     0 0 * * * /path/to/.venv/bin/python /path/to/remax-scalper.py
+     ```
+   - Replace `/path/to/.venv/bin/python` with the actual path to the Python interpreter in your virtual environment.
+   - Replace `/path/to/remax-scalper.py` with the actual path to your Python script.
+
+## Save and Exit
+   - Save the changes and exit the editor. The cron job will now run the script daily at the specified time.
 
 ### Steps to Use Task Scheduler
 
@@ -111,7 +129,7 @@ objShell.Run "X:\remax-scalper\.venv\Scripts\pythonw.exe X:\remax-scalper\remax-
    - Choose `Start a program`, then click `Next`.
 
 6. **Specify the Program to Start**:
-   - Program/script: `C:\Path\To\run_remax_scalper.vbs`
+   - Program/script: `C:\Path\To\run_remax_scalper.vbs` (Replace `C:\Path\To\run_remax_scalper.vbs` with the actual path to your `.vbs` file)
 
 7. **Finish the Task**:
    - Review your settings, then click `Finish`.
@@ -120,5 +138,23 @@ This will create a task that runs your Python script daily at the specified time
 
 ## License
 
-I don't care, use it as you wish :)
+MIT License
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
