@@ -11,6 +11,7 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 url = config['url']
+currency = config['currency'],
 base_url = config['base_url']
 filters = config['filters']
 bot_token = config['bot_token']
@@ -70,7 +71,7 @@ async def store_in_db(data, send_telegram_msg):
                 ''', (item['smallDescription'], item['listingStatusID'], item['descriptionTags'], item['listingPrice'], item['listingTitle']))
                 if item['listingPrice'] <= MAX_LISTING_PRICE and item['listingPrice'] < previous_price:
                     link = f"{base_url}/{item['descriptionTags']}/{item['listingTitle']}"
-                    message = f"Price dropped to: {item['listingPrice']} EUR\n{link}"
+                    message = f"Price dropped to: {item['listingPrice']} {currency} (from {previous_price} {currency})\n{link}"
                     try:
                         await send_telegram_message(chat_id, message, send_telegram_msg)
                         logging.info(f"Updated listing in database and sent price drop message: {item['listingTitle']}")
@@ -83,7 +84,7 @@ async def store_in_db(data, send_telegram_msg):
                 ''', (item['listingTitle'], item['smallDescription'], item['listingStatusID'], item['descriptionTags'], item['listingPrice']))
                 if item['listingPrice'] <= MAX_LISTING_PRICE:
                     link = f"{base_url}/{item['descriptionTags']}/{item['listingTitle']}"
-                    message = f"Price: {item['listingPrice']} EUR\n{link}"
+                    message = f"Price: {item['listingPrice']} {currency}\n{link}"
                     try:
                         await send_telegram_message(chat_id, message, send_telegram_msg)
                         logging.info(f"Inserted new listing into database: {item['listingTitle']}")

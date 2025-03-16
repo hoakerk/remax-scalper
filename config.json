@@ -1,4 +1,5 @@
 {
+    "currency": "EUR, $, whatever...",
     "max_listing_price": -1,
     "url": "listing PaginatedMultiMatchSearch URL",
     "base_url": "base_search_url",
