@@ -11,6 +11,7 @@ with open('config.json', 'r') as f:
     config = json.load(f)
 
 url = config['url']
+base_url = config['base_url']
 filters = config['filters']
 bot_token = config['bot_token']
 chat_id = config['chat_id']
@@ -57,16 +58,31 @@ async def store_in_db(data, send_telegram_msg):
     conn = sqlite3.connect('listings.db')
     cursor = conn.cursor()
     for item in data:
-        cursor.execute('SELECT 1 FROM listings WHERE listingTitle = ?', (item['listingTitle'],))
-        exists = cursor.fetchone()
+        cursor.execute('SELECT listingPrice FROM listings WHERE listingTitle = ?', (item['listingTitle'],))
+        result = cursor.fetchone()
         if item['listingStatusID'] == 1 and item['listingPrice'] >= 0:
-            if not exists:
+            if result:
+                previous_price = result[0]
+                cursor.execute('''
+                    UPDATE listings
+                    SET smallDescription = ?, listingStatusID = ?, descriptionTags = ?, listingPrice = ?
+                    WHERE listingTitle = ?
+                ''', (item['smallDescription'], item['listingStatusID'], item['descriptionTags'], item['listingPrice'], item['listingTitle']))
+                if item['listingPrice'] <= MAX_LISTING_PRICE and item['listingPrice'] < previous_price:
+                    link = f"{base_url}/{item['descriptionTags']}/{item['listingTitle']}"
+                    message = f"Price dropped to: {item['listingPrice']} EUR\n{link}"
+                    try:
+                        await send_telegram_message(chat_id, message, send_telegram_msg)
+                        logging.info(f"Updated listing in database and sent price drop message: {item['listingTitle']}")
+                    except Exception as e:
+                        logging.error(f"Failed to send message: {e}")
+            else:
                 cursor.execute('''
                     INSERT INTO listings (listingTitle, smallDescription, listingStatusID, descriptionTags, listingPrice)
                     VALUES (?, ?, ?, ?, ?)
                 ''', (item['listingTitle'], item['smallDescription'], item['listingStatusID'], item['descriptionTags'], item['listingPrice']))
                 if item['listingPrice'] <= MAX_LISTING_PRICE:
-                    link = f"https://www.remax.pt/pt/imoveis/{item['descriptionTags']}/{item['listingTitle']}"
+                    link = f"{base_url}/{item['descriptionTags']}/{item['listingTitle']}"
                     message = f"Price: {item['listingPrice']} EUR\n{link}"
                     try:
                         await send_telegram_message(chat_id, message, send_telegram_msg)
@@ -74,7 +90,7 @@ async def store_in_db(data, send_telegram_msg):
                     except Exception as e:
                         logging.error(f"Failed to send message: {e}")
         else:
-            if exists:
+            if result:
                 cursor.execute('''
                     DELETE FROM listings WHERE listingTitle = ?
                 ''', (item['listingTitle'],))
