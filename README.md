@@ -43,7 +43,7 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    It is recommended to create a virtual environment to manage dependencies. You can create a virtual environment using the following commands:
 
    ```sh
-   python -m venv .venv
+   py -m venv .venv
    ```
 
    Activate the virtual environment:
@@ -61,7 +61,7 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    Ensure you have the required dependencies installed. You can install them using `pip`:
 
    ```sh
-   pip install requests sqlite3 asyncio python-telegram-bot
+   py -m pip install requests asyncio python-telegram-bot
    ```
 
 3. **Configure `config.json`**:
@@ -71,13 +71,13 @@ In regard to the Telegram bot (`bot_token` and `chat_id`), you need to search on
    You can run the script using Python:
 
    ```sh
-   python remax-scalper.py
+   py remax-scalper.py
    ```
 
 5. **Schedule the Script**:
    To run the script periodically, you can use Task Scheduler on Windows. Create a `.vbs` file to run the script without a console window popping up and schedule it using Task Scheduler.
 
-## Running the Script Using Task Scheduler
+## Running the Script Using Task Scheduler (__Windows__)
 
 To run the Python script using Task Scheduler without a console window popping up, you can use a `.vbs` (VBScript) file. Below is an example of the `run_remax_scalper.vbs` file:
 
