@@ -8,8 +8,8 @@ The script uses a `config.json` file to store configuration settings. Below is a
 
 ```json
 {
-    "url": "https://www.remax.pt/api/Listing/PaginatedMultiMatchSearch",
-    "filters": "{\"filters\":[{\"field\":\"businessTypeID\",\"operationType\":\"int\",\"operator\":\"=\",\"value\":\"1\",\"label\":\"buy\"},{\"field\":\"numberOfBedrooms\",\"operationType\":\"int\",\"operator\":\"Range\",\"value\":\"3;\"},{\"field\":\"listingClassID\",\"operationType\":\"int\",\"operator\":\"=\",\"value\":\"1\"},{\"field\":\"Region1ID\",\"operationType\":\"int\",\"operator\":\"=\",\"value\":\"58\",\"label\":\"Braga\"},{\"field\":\"coordinates\",\"operationType\":\"coordinates\",\"operator\":\"Range\",\"value\":\"41.8708165;-8.9116637;41.2686145;-7.7105869\"},{\"field\":\"isSpecialExclusive\",\"operator\":\"=\",\"operationType\":\"string\",\"value\":\"false\"}],\"pageNumber\":1,\"pageSize\":10000,\"sort\":[\"-PublishDate\"],\"searchValue\":\"Braga\"}",
+    "url": "https://www.remax.<SOME_DOMAIN>/api/Listing/PaginatedMultiMatchSearch",
+    "filters": "see_next_steps_how_to_get_it",
     "bot_token": "your_telegram_bot_token",
     "chat_id": "your_telegram_chat_id",
     "max_listing_price": 200000,
