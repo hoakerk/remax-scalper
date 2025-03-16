@@ -1,0 +1,8 @@
+{
+    "max_listing_price": -1,
+    "url": "listing PaginatedMultiMatchSearch URL",
+    "filters": "json_filters",
+    "bot_token": "telegram_bot_token",
+    "chat_id": -1,
+    "send_telegram_msg": false
+}

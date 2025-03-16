@@ -1,0 +1,4 @@
+.venv/
+listings.db
+remax_scalper.log
+response.json
